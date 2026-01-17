@@ -24,6 +24,13 @@ Aplicativo para macOS que monitora as condições de surf e exibe um indicador c
 npm install
 ```
 
+**Nota sobre canvas (opcional):** O módulo `canvas` é usado para gerar ícones personalizados de ondas. Se a instalação do canvas falhar (requer dependências nativas), o app funcionará normalmente usando emojis de onda como fallback. Para instalar o canvas no macOS:
+```bash
+# Instalar dependências do canvas (opcional)
+brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+npm install canvas
+```
+
 2. Inicie a aplicação:
 ```bash
 npm start
@@ -79,7 +86,7 @@ frontend/
 
 - **Electron**: Framework para aplicativos desktop
 - **electron-store**: Armazenamento persistente de configurações
-- **canvas**: Geração de ícones personalizados de surf/ondas
+- **canvas** (opcional): Geração de ícones personalizados de surf/ondas (usa emoji fallback se não disponível)
 - **Node.js**: Runtime JavaScript
 
 ## Desenvolvimento
@@ -96,7 +103,7 @@ npm start
 - As configurações são salvas localmente usando electron-store
 - O aplicativo precisa do backend API rodando para funcionar
 - Em caso de erro na conexão, o ícone fica cinza
-- O ícone usa emojis coloridos para indicar as condições
+- **Ícones:** Se o módulo canvas estiver instalado, usa ícones personalizados de ondas. Caso contrário, usa emojis de onda (🌊) como fallback
 
 ## Solução de Problemas
 
@@ -109,6 +116,16 @@ npm start
 - Confirme a URL da API nas configurações
 - Verifique a conexão de rede
 
+**Erro "Cannot find module 'canvas'" ao iniciar**
+- Este é um aviso esperado se o canvas não foi instalado (é opcional)
+- O app funcionará normalmente usando emojis de onda 🌊
+- Para instalar o canvas e ter ícones personalizados:
+  ```bash
+  brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
+  npm install canvas
+  ```
+
 **Erro ao instalar dependências**
 - Certifique-se de ter o Node.js instalado
 - Execute `npm install` novamente se houver erros
+- Se o canvas falhar, ignore - ele é opcional

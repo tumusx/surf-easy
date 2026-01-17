@@ -22,7 +22,7 @@
     "electron": "^40.0.0",
     "electron-store": "^8.2.0"
   },
-  "dependencies": {
+  "optionalDependencies": {
     "canvas": "^2.11.2"
   }
 }
