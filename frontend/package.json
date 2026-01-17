@@ -1,0 +1,28 @@
+{
+  "name": "surf-monitor-macos",
+  "version": "1.0.0",
+  "description": "macOS menu bar app for monitoring surf conditions",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"No tests specified\""
+  },
+  "keywords": [
+    "surf",
+    "electron",
+    "macos",
+    "menubar"
+  ],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "electron": "^40.0.0",
+    "electron-store": "^8.2.0"
+  },
+  "optionalDependencies": {
+    "canvas": "^2.11.2"
+  }
+}
