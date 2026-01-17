@@ -185,11 +185,11 @@ go build -o surf-easy easySurf.go
 
 ### Frontend
 
-Para criar um pacote distribuível:
+Para desenvolvimento:
 
 ```bash
 cd frontend
-npm run package
+npm start
 ```
 
 ## 🐛 Solução de Problemas

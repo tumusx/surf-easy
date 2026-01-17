@@ -26,7 +26,50 @@ function getSettings() {
   };
 }
 
+function validateSettings(settings) {
+  const errors = [];
+  
+  // Validate latitude
+  if (typeof settings.latitude !== 'number' || isNaN(settings.latitude)) {
+    errors.push('Latitude must be a valid number');
+  } else if (settings.latitude < -90 || settings.latitude > 90) {
+    errors.push('Latitude must be between -90 and 90');
+  }
+  
+  // Validate longitude
+  if (typeof settings.longitude !== 'number' || isNaN(settings.longitude)) {
+    errors.push('Longitude must be a valid number');
+  } else if (settings.longitude < -180 || settings.longitude > 180) {
+    errors.push('Longitude must be between -180 and 180');
+  }
+  
+  // Validate interval
+  if (typeof settings.interval !== 'number' || isNaN(settings.interval)) {
+    errors.push('Interval must be a valid number');
+  } else if (settings.interval < 1 || settings.interval > 1440) {
+    errors.push('Interval must be between 1 and 1440 minutes');
+  }
+  
+  // Validate API URL
+  if (typeof settings.apiUrl !== 'string' || settings.apiUrl.trim() === '') {
+    errors.push('API URL is required');
+  } else {
+    try {
+      new URL(settings.apiUrl);
+    } catch {
+      errors.push('API URL must be a valid URL');
+    }
+  }
+  
+  return errors;
+}
+
 function saveSettings(settings) {
+  const errors = validateSettings(settings);
+  if (errors.length > 0) {
+    throw new Error(errors.join('; '));
+  }
+  
   store.set('latitude', settings.latitude);
   store.set('longitude', settings.longitude);
   store.set('interval', settings.interval);
@@ -191,9 +234,13 @@ ipcMain.handle('get-settings', () => {
 });
 
 ipcMain.handle('save-settings', (event, settings) => {
-  saveSettings(settings);
-  startUpdateInterval();
-  return { success: true };
+  try {
+    saveSettings(settings);
+    startUpdateInterval();
+    return { success: true };
+  } catch (error) {
+    return { success: false, error: error.message };
+  }
 });
 
 ipcMain.handle('get-current-status', () => {

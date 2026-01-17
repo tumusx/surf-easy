@@ -279,7 +279,7 @@ Response: Raw wave data (processed by backend)
 ```json
 {
   "electron": "^40.0.0",
-  "electron-store": "^11.0.2"
+  "electron-store": "^8.2.0"
 }
 ```
 
@@ -307,9 +307,11 @@ cd frontend && npm start
 # Backend: Compile
 cd backend && go build -o surf-easy easySurf.go
 
-# Frontend: Package (future)
-cd frontend && npm run package
+# Frontend: Run
+cd frontend && npm start
 ```
+
+Note: Package distribution for macOS is not yet configured. Run with `npm start` for now.
 
 ## Manutenção
 

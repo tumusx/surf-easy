@@ -86,12 +86,6 @@ Para desenvolvimento, você pode usar:
 npm start
 ```
 
-Para criar um pacote do aplicativo (em desenvolvimento):
-
-```bash
-npm run package
-```
-
 ## Notas
 
 - O aplicativo roda na barra de menu (menu bar) e não aparece no Dock

@@ -297,24 +297,67 @@
         document.getElementById('settingsForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            // Parse input values
+            const latitude = parseFloat(document.getElementById('latitude').value);
+            const longitude = parseFloat(document.getElementById('longitude').value);
+            const interval = parseInt(document.getElementById('interval').value);
+            const apiUrl = document.getElementById('apiUrl').value.trim();
+            
+            // Client-side validation
+            const errors = [];
+            
+            if (isNaN(latitude) || latitude < -90 || latitude > 90) {
+                errors.push('Latitude must be between -90 and 90');
+            }
+            
+            if (isNaN(longitude) || longitude < -180 || longitude > 180) {
+                errors.push('Longitude must be between -180 and 180');
+            }
+            
+            if (isNaN(interval) || interval < 1 || interval > 1440) {
+                errors.push('Interval must be between 1 and 1440 minutes');
+            }
+            
+            if (!apiUrl) {
+                errors.push('API URL is required');
+            }
+            
+            // Show validation errors
+            if (errors.length > 0) {
+                const message = document.getElementById('message');
+                message.textContent = 'Validation error: ' + errors.join('; ');
+                message.className = 'message error';
+                message.style.display = 'block';
+                return;
+            }
+            
             const settings = {
-                latitude: parseFloat(document.getElementById('latitude').value),
-                longitude: parseFloat(document.getElementById('longitude').value),
-                interval: parseInt(document.getElementById('interval').value),
-                apiUrl: document.getElementById('apiUrl').value
+                latitude: latitude,
+                longitude: longitude,
+                interval: interval,
+                apiUrl: apiUrl
             };
             
             try {
                 const result = await window.electronAPI.saveSettings(settings);
                 
                 const message = document.getElementById('message');
-                message.textContent = 'Settings saved successfully! Update will occur shortly.';
-                message.className = 'message success';
+                
+                if (result.success) {
+                    message.textContent = 'Settings saved successfully! Update will occur shortly.';
+                    message.className = 'message success';
+                } else {
+                    message.textContent = 'Error saving settings: ' + (result.error || 'Unknown error');
+                    message.className = 'message error';
+                }
+                
                 message.style.display = 'block';
                 
-                setTimeout(() => {
-                    message.style.display = 'none';
-                }, 3000);
+                if (result.success) {
+                    setTimeout(() => {
+                        message.style.display = 'none';
+                    }, 3000);
+                }
             } catch (error) {
                 const message = document.getElementById('message');
                 message.textContent = 'Error saving settings: ' + error.message;
