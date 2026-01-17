@@ -229,7 +229,7 @@
 
             <div class="button-group">
                 <button type="submit" class="btn-primary">Save Settings</button>
-                <button type="button" class="btn-secondary" onclick="window.close()">Cancel</button>
+                <button type="button" id="cancelButton" class="btn-secondary">Cancel</button>
             </div>
 
             <div id="message" class="message"></div>
@@ -257,18 +257,16 @@
     </div>
 
     <script>
-        const { ipcRenderer } = require('electron');
-
         // Load current settings
         async function loadSettings() {
-            const settings = await ipcRenderer.invoke('get-settings');
+            const settings = await window.electronAPI.getSettings();
             document.getElementById('latitude').value = settings.latitude;
             document.getElementById('longitude').value = settings.longitude;
             document.getElementById('interval').value = settings.interval;
             document.getElementById('apiUrl').value = settings.apiUrl;
             
             // Load current status
-            const status = await ipcRenderer.invoke('get-current-status');
+            const status = await window.electronAPI.getCurrentStatus();
             updateStatusDisplay(status.color, status.level);
         }
 
@@ -288,7 +286,7 @@
         }
 
         // Listen for surf data updates
-        ipcRenderer.on('surf-data-update', (event, data) => {
+        window.electronAPI.onSurfDataUpdate((data) => {
             updateStatusDisplay(data.color, data.level, {
                 waveHeight: data.waveHeight.toFixed(1),
                 period: data.period.toFixed(1)
@@ -307,7 +305,7 @@
             };
             
             try {
-                const result = await ipcRenderer.invoke('save-settings', settings);
+                const result = await window.electronAPI.saveSettings(settings);
                 
                 const message = document.getElementById('message');
                 message.textContent = 'Settings saved successfully! Update will occur shortly.';
@@ -323,6 +321,11 @@
                 message.className = 'message error';
                 message.style.display = 'block';
             }
+        });
+
+        // Handle cancel button
+        document.getElementById('cancelButton').addEventListener('click', () => {
+            window.close();
         });
 
         // Load settings on startup

@@ -131,8 +131,9 @@ function createSettingsWindow() {
     height: 550,
     resizable: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
+      preload: path.join(__dirname, 'preload.js'),
+      nodeIntegration: false,
+      contextIsolation: true
     },
     title: 'Surf Monitor Settings'
   });
