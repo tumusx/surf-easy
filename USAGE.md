@@ -7,7 +7,7 @@ Este guia fornece instruções passo a passo para configurar e usar o Surf Monit
 Antes de começar, certifique-se de ter:
 
 1. **macOS** 10.14 ou superior
-2. **Node.js** 20+ instalado ([Download](https://nodejs.org/))
+2. **Node.js** 16+ instalado ([Download](https://nodejs.org/))
 3. **Go** 1.25.5+ instalado ([Download](https://golang.org/dl/))
 4. **Chave da API Swell Cloud** ([Obter chave](https://swellcloud.net))
 

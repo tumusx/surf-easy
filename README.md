@@ -96,7 +96,7 @@ surf-easy/
 
 ### Frontend
 - macOS 10.14 ou superior
-- Node.js 20 ou superior (requerido por electron-store)
+- Node.js 16 ou superior
 
 ## 📝 API Endpoint
 
