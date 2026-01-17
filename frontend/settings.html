@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Surf Monitor Settings</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .status-indicator {
+            background: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .color-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            border: 3px solid white;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .status-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .status-details {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+            font-size: 14px;
+        }
+
+        input[type="number"],
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .input-hint {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .legend {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .legend-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 12px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-right: 12px;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .legend-label {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 15px;
+            font-size: 13px;
+            display: none;
+        }
+
+        .message.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .message.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏄 Surf Monitor</h1>
+        <p class="subtitle">Configure your surf conditions monitor</p>
+
+        <div class="status-indicator">
+            <div id="colorCircle" class="color-circle" style="background-color: gray;"></div>
+            <div id="statusText" class="status-text">Loading...</div>
+            <div id="statusDetails" class="status-details">Waiting for data</div>
+        </div>
+
+        <form id="settingsForm">
+            <div class="form-group">
+                <label for="latitude">Latitude</label>
+                <input type="number" id="latitude" step="0.0001" required>
+                <div class="input-hint">Example: -23.5505 (São Paulo)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="longitude">Longitude</label>
+                <input type="number" id="longitude" step="0.0001" required>
+                <div class="input-hint">Example: -46.6333 (São Paulo)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="interval">Update Interval (minutes)</label>
+                <input type="number" id="interval" min="1" max="1440" required>
+                <div class="input-hint">How often to check surf conditions (1-1440 minutes)</div>
+            </div>
+
+            <div class="form-group">
+                <label for="apiUrl">API URL</label>
+                <input type="text" id="apiUrl" required>
+                <div class="input-hint">Your backend API URL (e.g., http://localhost:8080)</div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-primary">Save Settings</button>
+                <button type="button" class="btn-secondary" onclick="window.close()">Cancel</button>
+            </div>
+
+            <div id="message" class="message"></div>
+        </form>
+
+        <div class="legend">
+            <div class="legend-title">Surf Conditions Legend</div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: green;"></div>
+                <div class="legend-label"><strong>Green:</strong> Good for beginners (≤1.0m waves, ≤8s period)</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: yellow;"></div>
+                <div class="legend-label"><strong>Yellow:</strong> Intermediate (≤1.8m waves, ≤12s period)</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: red;"></div>
+                <div class="legend-label"><strong>Red:</strong> Advanced conditions (>1.8m waves or >12s period)</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background-color: gray;"></div>
+                <div class="legend-label"><strong>Gray:</strong> No data or connection error</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        // Load current settings
+        async function loadSettings() {
+            const settings = await ipcRenderer.invoke('get-settings');
+            document.getElementById('latitude').value = settings.latitude;
+            document.getElementById('longitude').value = settings.longitude;
+            document.getElementById('interval').value = settings.interval;
+            document.getElementById('apiUrl').value = settings.apiUrl;
+            
+            // Load current status
+            const status = await ipcRenderer.invoke('get-current-status');
+            updateStatusDisplay(status.color, status.level);
+        }
+
+        function updateStatusDisplay(color, level, details = null) {
+            const colorCircle = document.getElementById('colorCircle');
+            const statusText = document.getElementById('statusText');
+            const statusDetails = document.getElementById('statusDetails');
+            
+            colorCircle.style.backgroundColor = color;
+            statusText.textContent = level;
+            
+            if (details) {
+                statusDetails.textContent = `Wave: ${details.waveHeight}m, Period: ${details.period}s`;
+            } else {
+                statusDetails.textContent = 'Current conditions';
+            }
+        }
+
+        // Listen for surf data updates
+        ipcRenderer.on('surf-data-update', (event, data) => {
+            updateStatusDisplay(data.color, data.level, {
+                waveHeight: data.waveHeight.toFixed(1),
+                period: data.period.toFixed(1)
+            });
+        });
+
+        // Handle form submission
+        document.getElementById('settingsForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const settings = {
+                latitude: parseFloat(document.getElementById('latitude').value),
+                longitude: parseFloat(document.getElementById('longitude').value),
+                interval: parseInt(document.getElementById('interval').value),
+                apiUrl: document.getElementById('apiUrl').value
+            };
+            
+            try {
+                const result = await ipcRenderer.invoke('save-settings', settings);
+                
+                const message = document.getElementById('message');
+                message.textContent = 'Settings saved successfully! Update will occur shortly.';
+                message.className = 'message success';
+                message.style.display = 'block';
+                
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 3000);
+            } catch (error) {
+                const message = document.getElementById('message');
+                message.textContent = 'Error saving settings: ' + error.message;
+                message.className = 'message error';
+                message.style.display = 'block';
+            }
+        });
+
+        // Load settings on startup
+        loadSettings();
+    </script>
+</body>
+</html>
