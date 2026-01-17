@@ -5,7 +5,8 @@ Aplicativo para macOS que monitora as condições de surf e exibe um indicador c
 ## Características
 
 - 🏄 Monitora condições de surf em tempo real
-- 🎨 Indicador colorido na barra de menu (menu bar/notch area)
+- 🌊 Ícone de onda estilizado na barra de menu (maior e mais visível)
+- 🎨 Cores indicam nível de dificuldade (verde/amarelo/vermelho/cinza)
 - ⏰ Atualização automática configurável (padrão: 30 minutos)
 - ⚙️ Interface de configuração simples
 - 🌍 Suporte para qualquer localização (latitude/longitude)
@@ -55,12 +56,14 @@ Ao iniciar o aplicativo pela primeira vez, você pode configurar:
 
 ## Indicadores de Cor
 
-O aplicativo usa cores para indicar as condições de surf:
+O aplicativo exibe um ícone de onda estilizado na barra de menu, com cores indicando as condições de surf:
 
-- 🟢 **Verde**: Bom para iniciantes (ondas ≤ 1.0m, período ≤ 8s)
-- 🟡 **Amarelo**: Intermediário (ondas ≤ 1.8m, período ≤ 12s)
-- 🔴 **Vermelho**: Avançado (ondas > 1.8m ou período > 12s)
-- ⚪ **Cinza**: Sem dados ou erro de conexão
+- 🌊 **Verde**: Bom para iniciantes (ondas ≤ 1.0m, período ≤ 8s)
+- 🌊 **Amarelo**: Intermediário (ondas ≤ 1.8m, período ≤ 12s)
+- 🌊 **Vermelho**: Avançado (ondas > 1.8m ou período > 12s)
+- 🌊 **Cinza**: Sem dados ou erro de conexão
+
+O ícone é maior e mais visível que emojis simples, facilitando a leitura no notch do MacBook.
 
 ## Estrutura do Projeto
 
@@ -76,6 +79,7 @@ frontend/
 
 - **Electron**: Framework para aplicativos desktop
 - **electron-store**: Armazenamento persistente de configurações
+- **canvas**: Geração de ícones personalizados de surf/ondas
 - **Node.js**: Runtime JavaScript
 
 ## Desenvolvimento

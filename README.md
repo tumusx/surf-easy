@@ -12,7 +12,8 @@ Este projeto consiste em duas partes principais:
 ## 🎯 Características
 
 - 🌊 Monitora condições de surf em tempo real
-- 🎨 Indicador visual colorido na barra de menu do macOS
+- 🏄 Ícone de onda estilizado e maior na barra de menu do macOS
+- 🎨 Cores indicam nível de dificuldade (verde/amarelo/vermelho/cinza)
 - 🔄 Atualização automática configurável (padrão: 30 minutos)
 - 📍 Suporte para qualquer localização mundial
 - ⚙️ Interface de configuração intuitiva
@@ -63,18 +64,20 @@ npm install
 npm start
 ```
 
-4. Um ícone colorido aparecerá na barra de menu do macOS
+4. Um ícone de onda estilizado e colorido aparecerá na barra de menu do macOS
 
 ## 📊 Indicadores de Condição
 
-O aplicativo usa um sistema de cores para indicar as condições de surf:
+O aplicativo exibe um ícone de onda estilizado na barra de menu, com cores indicando as condições:
 
 | Cor | Nível | Condições |
 |-----|-------|-----------|
-| 🟢 Verde | Iniciante | Ondas ≤ 1.0m, período ≤ 8s |
-| 🟡 Amarelo | Intermediário | Ondas ≤ 1.8m, período ≤ 12s |
-| 🔴 Vermelho | Avançado | Ondas > 1.8m ou período > 12s |
-| ⚪ Cinza | Sem dados | Erro de conexão ou sem dados |
+| 🌊 Verde | Iniciante | Ondas ≤ 1.0m, período ≤ 8s |
+| 🌊 Amarelo | Intermediário | Ondas ≤ 1.8m, período ≤ 12s |
+| 🌊 Vermelho | Avançado | Ondas > 1.8m ou período > 12s |
+| 🌊 Cinza | Sem dados | Erro de conexão ou sem dados |
+
+*O ícone é maior e mais visível que emojis simples, perfeito para o notch do MacBook.*
 
 ## 🏗️ Estrutura do Projeto
 

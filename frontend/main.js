@@ -78,20 +78,119 @@ function saveSettings(settings) {
 
 function getEmojiForColor(color) {
   const emojis = {
-    'green': '🟢',
-    'yellow': '🟡',
-    'red': '🔴',
-    'gray': '⚪'
+    'green': '🌊',  // Wave emoji for surf theme
+    'yellow': '🌊',
+    'red': '🌊',
+    'gray': '🌊'
   };
-  return emojis[color] || '⚪';
+  return emojis[color] || '🌊';
+}
+
+function createSurfIcon(color) {
+  // Create a larger icon with surf/wave theme
+  // Using a larger canvas for better visibility in the menu bar
+  const size = 44; // Larger size for macOS menu bar (22pt @2x retina)
+  const canvas = require('canvas').createCanvas(size, size);
+  const ctx = canvas.getContext('2d');
+  
+  // Set colors based on surf level
+  const colors = {
+    'green': '#10B981',    // Green - good conditions
+    'yellow': '#F59E0B',   // Yellow/Orange - moderate
+    'red': '#EF4444',      // Red - challenging
+    'gray': '#9CA3AF'      // Gray - unknown
+  };
+  
+  const fillColor = colors[color] || colors['gray'];
+  
+  // Draw a stylized wave icon
+  ctx.clearRect(0, 0, size, size);
+  
+  // Draw wave shape - stylized surf wave
+  ctx.fillStyle = fillColor;
+  ctx.beginPath();
+  
+  // Bottom wave curve
+  ctx.moveTo(2, size - 8);
+  ctx.bezierCurveTo(
+    size * 0.25, size - 2,
+    size * 0.5, size - 12,
+    size * 0.75, size - 8
+  );
+  ctx.bezierCurveTo(
+    size * 0.85, size - 6,
+    size - 2, size - 4,
+    size - 2, size - 2
+  );
+  ctx.lineTo(size - 2, size - 2);
+  ctx.lineTo(2, size - 2);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Middle wave
+  ctx.beginPath();
+  ctx.moveTo(4, size - 16);
+  ctx.bezierCurveTo(
+    size * 0.3, size - 10,
+    size * 0.5, size - 20,
+    size * 0.7, size - 16
+  );
+  ctx.bezierCurveTo(
+    size * 0.8, size - 14,
+    size - 4, size - 12,
+    size - 4, size - 10
+  );
+  ctx.lineTo(size - 4, size - 8);
+  ctx.lineTo(4, size - 8);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Top wave (smaller)
+  ctx.beginPath();
+  ctx.moveTo(8, size - 24);
+  ctx.bezierCurveTo(
+    size * 0.35, size - 20,
+    size * 0.5, size - 28,
+    size * 0.65, size - 24
+  );
+  ctx.bezierCurveTo(
+    size * 0.75, size - 22,
+    size - 8, size - 20,
+    size - 8, size - 18
+  );
+  ctx.lineTo(size - 8, size - 16);
+  ctx.lineTo(8, size - 16);
+  ctx.closePath();
+  ctx.fill();
+  
+  // Add a white foam/spray effect on top
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+  ctx.beginPath();
+  ctx.arc(size * 0.3, size - 26, 3, 0, Math.PI * 2);
+  ctx.arc(size * 0.5, size - 29, 2, 0, Math.PI * 2);
+  ctx.arc(size * 0.65, size - 26, 3, 0, Math.PI * 2);
+  ctx.fill();
+  
+  const buffer = canvas.toBuffer('image/png');
+  return nativeImage.createFromBuffer(buffer);
 }
 
 function updateTrayIcon(color) {
   if (tray) {
     currentColor = color;
-    const emoji = getEmojiForColor(color);
-    tray.setTitle(emoji);
-    tray.setToolTip(`Surf Conditions: ${getSurfLevelFromColor(color)}`);
+    try {
+      // Try to create surf wave icon
+      const icon = createSurfIcon(color);
+      tray.setImage(icon);
+      tray.setTitle(''); // Clear title when using image
+      tray.setToolTip(`Surf Conditions: ${getSurfLevelFromColor(color)}`);
+    } catch (error) {
+      console.error('Error creating surf icon:', error);
+      // Fallback to wave emoji if canvas fails
+      const emoji = getEmojiForColor(color);
+      tray.setTitle(emoji);
+      tray.setToolTip(`Surf Conditions: ${getSurfLevelFromColor(color)}`);
+    }
   }
 }
 
@@ -190,9 +289,17 @@ function createSettingsWindow() {
 }
 
 function createTray() {
-  // Create tray with empty image (will display emoji as title)
+  // Create tray with initial icon
   tray = new Tray(nativeImage.createEmpty());
-  tray.setTitle('⚪'); // Start with gray emoji
+  
+  // Try to set initial surf icon
+  try {
+    const icon = createSurfIcon('gray');
+    tray.setImage(icon);
+  } catch (error) {
+    console.error('Error creating initial icon:', error);
+    tray.setTitle('🌊'); // Fallback to wave emoji
+  }
   
   const contextMenu = Menu.buildFromTemplate([
     {
