@@ -19,8 +19,5 @@
   "devDependencies": {
     "electron": "^40.0.0",
     "electron-store": "^11.0.2"
-  },
-  "dependencies": {
-    "canvas": "^2.11.2"
   }
 }

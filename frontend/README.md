@@ -76,7 +76,6 @@ frontend/
 
 - **Electron**: Framework para aplicativos desktop
 - **electron-store**: Armazenamento persistente de configurações
-- **canvas**: Geração de ícones coloridos
 - **Node.js**: Runtime JavaScript
 
 ## Desenvolvimento
@@ -99,6 +98,7 @@ npm run package
 - As configurações são salvas localmente usando electron-store
 - O aplicativo precisa do backend API rodando para funcionar
 - Em caso de erro na conexão, o ícone fica cinza
+- O ícone usa emojis coloridos para indicar as condições
 
 ## Solução de Problemas
 
@@ -113,8 +113,4 @@ npm run package
 
 **Erro ao instalar dependências**
 - Certifique-se de ter o Node.js instalado
-- Para o canvas, pode ser necessário instalar dependências do sistema:
-  ```bash
-  # macOS
-  brew install pkg-config cairo pango libpng jpeg giflib librsvg
-  ```
+- Execute `npm install` novamente se houver erros

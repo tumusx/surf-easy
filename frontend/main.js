@@ -33,36 +33,22 @@ function saveSettings(settings) {
   store.set('apiUrl', settings.apiUrl);
 }
 
-function createColorIcon(color) {
-  const size = 22;
-  const canvas = require('canvas').createCanvas(size, size);
-  const ctx = canvas.getContext('2d');
-  
-  // Draw circle
-  ctx.beginPath();
-  ctx.arc(size / 2, size / 2, size / 2 - 2, 0, 2 * Math.PI);
-  ctx.fillStyle = color;
-  ctx.fill();
-  ctx.strokeStyle = 'white';
-  ctx.lineWidth = 2;
-  ctx.stroke();
-  
-  const buffer = canvas.toBuffer('image/png');
-  return nativeImage.createFromBuffer(buffer);
+function getEmojiForColor(color) {
+  const emojis = {
+    'green': '🟢',
+    'yellow': '🟡',
+    'red': '🔴',
+    'gray': '⚪'
+  };
+  return emojis[color] || '⚪';
 }
 
 function updateTrayIcon(color) {
   if (tray) {
     currentColor = color;
-    try {
-      const icon = createColorIcon(color);
-      tray.setImage(icon);
-      tray.setToolTip(`Surf Conditions: ${getSurfLevelFromColor(color)}`);
-    } catch (error) {
-      console.error('Error updating tray icon:', error);
-      // Fallback to simple text if canvas fails
-      tray.setTitle(`🏄 ${color.toUpperCase()}`);
-    }
+    const emoji = getEmojiForColor(color);
+    tray.setTitle(emoji);
+    tray.setToolTip(`Surf Conditions: ${getSurfLevelFromColor(color)}`);
   }
 }
 
@@ -159,16 +145,9 @@ function createSettingsWindow() {
 }
 
 function createTray() {
-  // Create a simple colored icon (will be updated when we get data)
-  try {
-    const icon = createColorIcon('gray');
-    tray = new Tray(icon);
-  } catch (error) {
-    console.error('Error creating tray icon with canvas:', error);
-    // Fallback: create empty tray
-    tray = new Tray(nativeImage.createEmpty());
-    tray.setTitle('🏄');
-  }
+  // Create tray with empty image (will display emoji as title)
+  tray = new Tray(nativeImage.createEmpty());
+  tray.setTitle('⚪'); // Start with gray emoji
   
   const contextMenu = Menu.buildFromTemplate([
     {
