@@ -27,10 +27,11 @@ Este projeto consiste em duas partes principais:
 cd backend
 ```
 
-2. Crie um arquivo `local.properties` com sua chave da API:
+2. **Opcional:** Crie um arquivo `local.properties` com sua chave da API Swell Cloud:
 ```
 API_KEY=sua_chave_api_aqui
 ```
+*Nota: O backend funciona sem API key usando APIs gratuitas.*
 
 3. Compile e execute:
 ```bash
@@ -39,6 +40,11 @@ go build -o surf-easy easySurf.go
 ```
 
 O servidor estará disponível em `http://localhost:8080`
+
+**Fontes de Dados (fallback automático):**
+- 🥇 Swell Cloud API (requer API key)
+- 🥈 Open-Meteo Marine API (gratuita, sem key)
+- 🥉 Dados estimados (sempre disponível)
 
 ### Frontend
 
@@ -92,7 +98,7 @@ surf-easy/
 
 ### Backend
 - Go 1.25.5 ou superior
-- Chave da API Swell Cloud
+- Chave da API Swell Cloud (opcional - funciona sem)
 
 ### Frontend
 - macOS 10.14 ou superior
