@@ -13,7 +13,7 @@ Aplicativo para macOS que monitora as condições de surf e exibe um indicador c
 ## Requisitos
 
 - macOS (testado em macOS 10.14+)
-- Node.js 16 ou superior
+- Node.js 20 ou superior (requerido por electron-store)
 - Backend API rodando (veja `../backend/README.md`)
 
 ## Instalação

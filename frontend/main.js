@@ -76,6 +76,7 @@ async function fetchSurfData() {
   const url = `${settings.apiUrl}/swell?lat=${settings.latitude}&lon=${settings.longitude}`;
   
   try {
+    // Note: fetch is available in Electron 40+ (uses Node.js 22+)
     const response = await fetch(url);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
