@@ -1,6 +1,0 @@
-# Surf Easy Backend Configuration
-# Copy this file to local.properties and add your actual API key
-
-# API Key for Swell Cloud API
-# Get your API key from: https://swellcloud.net
-API_KEY=your_api_key_here
